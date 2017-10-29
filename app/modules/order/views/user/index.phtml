@@ -1,0 +1,51 @@
+<?php
+
+use Phalcon\Tag; ?>
+
+<div class="row col-sm-12">
+    <h1>Users</h1>
+    <?php echo $this->getContent(); ?>
+
+    <?php if (isset($page->items)) : ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th class="text-right">User name</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach ($page->items as $item) : ?>
+                    <tr>
+                        <td><?php echo $item->getId() ?></td>
+                        <td class="text-right"><?php echo $item->getFirstName() . ' ' . $item->getLastName(); ?></td>
+                        <td class="text-right">
+                            <a href="/order/user/edit/<?php echo $item->getId() ?>" class="btn btn-sm btn-success">
+                                <span class="fa fa-pencil"></span> Edit
+                            </a>
+                            <a href="/order/user/delete/<?php echo $item->getId() ?>" class="btn btn-sm btn-danger">
+                                <span class="fa fa-trash-o"></span> Delete
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <?php if ($page->total_pages > 1) : ?>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" align="center">
+                            <ul class="pagination"> 
+                                <li><?php echo Tag::linkTo(array("order/user", '<span class="fa fa-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/user?pages=" . $page->before, '<span class="fa fa-step-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/user?pages=" . $page->next, '<span class="fa fa-step-forward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/user?pages=" . $page->last, '<span class="fa fa-forward"></span>', "class" => "btn btn-default")) ?></li>
+                            </ul>
+                        </td>
+                    </tr>
+                <tfoot>
+                <?php endif; ?>
+        </table>
+    <?php endif; ?>
+</div>

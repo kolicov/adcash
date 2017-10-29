@@ -1,0 +1,5 @@
+<div id="upload_form" class="hide">
+    <?php echo $this->tag->form(array('/order/multimedia/upload', "method" => "post", 'enctype' => 'multipart/form-data')); ?>
+    <input type="file" multiple name="files[]" id="files" onchange="uploadFiles()"/>
+    <?php echo $this->tag->endForm() ?>    
+</div>

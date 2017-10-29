@@ -1,0 +1,129 @@
+<?php
+
+use Phalcon\Tag; ?>
+
+<div class="col-sm-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Add new order
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <?php echo $this->tag->form(array('order/orders/create/', 'method' => 'post', 'class' => 'form-horizontal')) ?>
+                    <div class="form-group">
+                        <div class="col-lg-1">
+                            <label>User</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <?php echo $form->render("user_id", array('class' => 'form-control', 'placeholder' => 'User name')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-1">
+                            <label>Product</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <?php echo $form->render("product_id", array('class' => 'form-control', 'placeholder' => 'Product')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-1">
+                            <label>Quantity</label>
+                        </div>
+                        <div class="col-lg-4">
+                            <?php echo $form->render("quantity", array('class' => 'form-control', 'placeholder' => 'Quantity')); ?>
+                        </div>
+                    </div>
+                    <div class="cntr">
+                        <?php echo $this->tag->submitButton(array("Add", "class" => "btn btn-primary")) ?>
+                    </div>
+                    <?php echo $this->tag->endForm() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <?php echo $this->tag->form(array('/', 'method' => 'get', 'class' => 'form-horizontal')) ?>
+                <div class="col-lg-12">
+                    <label>Search</label>
+                </div>
+                <div class="col-lg-12">
+                    <div class="col-lg-3">
+                        <?php echo $searchForm->render("date", array('class' => 'form-control')); ?>
+                    </div>
+                    <div class="col-lg-5">
+                        <?php echo $searchForm->render("term", array('class' => 'form-control', 'placeholder' => 'Enter search term ...')); ?>
+                    </div>
+                    <div class="col-lg-4 text-right">
+                        <?php echo $this->tag->submitButton(array("search", "class" => "btn btn-primary")) ?>
+                    </div>
+                    <?php echo $this->tag->endForm() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <?php if (isset($page->items)) : ?>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-right">User</th>
+                                <th class="text-right">Product</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Quantity</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Date</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($page->items as $order) : ?>
+                                <tr>
+                                    <?php
+                                    $user = $order->getUser();
+                                    $product = $order->getFirstProduct();
+                                    ?>
+                                    <td class="text-right"><?php echo $user->getName(); ?></td>
+                                    <td class="text-right"><?php echo $product->getTitle(); ?></td>
+                                    <td class="text-right"><?php echo $product->getPrice(); ?> EUR</td>
+                                    <td class="text-right"><?php echo $order->getQuantity(); ?></td>
+                                    <td class="text-right"><?php echo $order->getTotalPrice(); ?> EUR</td>
+                                    <td class="text-right"><?php echo $order->getCreate(); ?></td>
+                                    <td class="text-right">
+                                        <a href="/order/orders/edit/<?php echo $order->getId() ?>" class="btn btn-sm btn-success">
+                                            <span class="fa fa-pencil"></span>
+                                            Edit
+                                        </a>
+                                        <a href="/order/orders/delete/<?php echo $order->getId() ?>" class="btn btn-sm btn-danger">
+                                            <span class="fa fa-trash-o">
+                                                Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <?php if ($page->total_pages > 1) : ?>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8" align="center">
+                                        <ul class="pagination">
+                                            <li><?php echo Tag::linkTo(array("order/orders", '<span class="fa fa-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                            <li><?php echo Tag::linkTo(array("order/orders?pages=" . $page->before, '<span class="fa fa-step-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                            <li><?php echo Tag::linkTo(array("order/orders?pages=" . $page->next, '<span class="fa fa-step-forward"></span>', "class" => "btn btn-default")) ?></li>
+                                            <li><?php echo Tag::linkTo(array("order/orders?pages=" . $page->last, '<span class="fa fa-forward"></span>', "class" => "btn btn-default")) ?></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            <tfoot>
+                            <?php endif; ?>
+                    </table>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>

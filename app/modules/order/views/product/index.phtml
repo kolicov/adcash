@@ -1,0 +1,73 @@
+<?php
+
+use Phalcon\Tag; ?>
+
+<div class="row col-sm-12">
+    <h1>Products</h1>
+    <?php echo $this->getContent(); ?>
+    <?php if (isset($page->items)) : ?>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th class="text-right">Product name</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <?php foreach ($page->items as $product) : ?>
+                    <tr>
+                        <td><?php echo $product->getId() ?></td>
+                        <td class="text-right"><?php echo $product->getTitle(); ?></td>
+                        <td class="text-right"><?php echo $product->getPrice(); ?></td>
+                        <td class="text-right">
+                            <a href="/order/product/edit/<?php echo $product->getId() ?>" class="btn btn-sm btn-success">
+                                <span class="fa fa-pencil"></span> Edit
+                            </a>
+                            <a href="/order/product/delete/<?php echo $product->getId() ?>" class="btn btn-sm btn-danger">
+                                <span class="fa fa-trash-o"></span> Delete
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            <?php if ($page->total_pages > 1) : ?>
+                <tfoot>
+                    <tr>
+                        <td colspan="8" align="center">
+                            <ul class="pagination"> 
+                                <li><?php echo Tag::linkTo(array("order/product?" . $string, '<span class="fa fa-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/product?pages=" . $page->before . '&' . $string, '<span class="fa fa-step-backward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/product?pages=" . $page->next . '&' . $string, '<span class="fa fa-step-forward"></span>', "class" => "btn btn-default")) ?></li>
+                                <li><?php echo Tag::linkTo(array("order/product?pages=" . $page->last . '&' . $string, '<span class="fa fa-forward"></span>', "class" => "btn btn-default")) ?></li>
+                            </ul>
+                        </td>
+                    </tr>
+                <tfoot>
+                <?php endif; ?>
+        </table>
+    <?php endif; ?>
+</div>
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Редакция</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/order/product/update" method="POST" id="edite_price">
+                    <input type="hidden" id="id" name="id" class='form-control' style="width:300px;" name="password"/>
+                    <label form="email">Цена</label>
+                    <input type="text" class='form-control' id="price" name="price" style="width:300px;" name="email"/>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="edit" class="btn btn-primary">Редактирай</a>
+            </div>
+        </div>
+    </div>
+</div>

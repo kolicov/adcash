@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <i class="fa fa-picture-o"></i> Gallery
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" onclick="showUploadDialog()" class="btn btn-default btn-xs dropdown-toggle">
+                    Upload image
+                    <i class="fa fa-folder-open"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row multimedia_holder">
+            <?php if (isset($images)): ?>
+                <?php foreach ($images as $image): ?>
+                    <div class="col-lg-3 col-md-4 col-xs-6 thumb" id="image_<?php echo $image->getId(); ?>">
+                        <input type="hidden" name="image_ids[]" value="<?php echo $image->getId(); ?>"/>
+                        <input type="hidden" name="image_urls[]" value="<?php echo $image->getImage(); ?>"/>
+                        <input type="hidden" name="image_description[]" value="<?php echo $image->getDescription(); ?>"/>
+                        <div class="thumbnail">
+                            <button type="button" class="close" onclick="removeFile(<?php echo $image->getId(); ?>)" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <a href="#description_class" class="description button" onclick="addDescription(<?php echo $image->getId(); ?>)" data-toggle="modal" data-target="#description_class"><i class="fa fa-align-justify" aria-hidden="true"></i></a>
+                            <img class="img-responsive" src="<?php echo $image->getImage(); ?>" style ="max-height: 147px!important;"/>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal" id="description_class">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Description</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="modal_image_id" value=""/>
+                <textarea id="modal_description" rows="10" cols="91"></textarea>
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="save" class="btn btn-primary">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
